@@ -1,0 +1,16 @@
+# Apple Touch Icon Placeholder
+
+This is a placeholder for the apple-touch-icon.png file.
+
+Requirements:
+- Size: 180x180 pixels
+- Format: PNG
+- Should represent The Zen Axis brand
+- Will be used when users add the site to their iOS home screen
+
+To create:
+1. Design a 180x180 pixel icon
+2. Save as PNG format
+3. Replace this file
+
+The icon should be easily recognizable and work well on both light and dark backgrounds.

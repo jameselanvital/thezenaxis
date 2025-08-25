@@ -1,0 +1,26 @@
+{
+  "name": "The Zen Axis - Personalized Wellness Solutions",
+  "short_name": "Zen Axis",
+  "description": "Transform your health with our comprehensive approach to wellness, nutrition, and lifestyle medicine.",
+  "icons": [
+    {
+      "src": "/images/logos/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logos/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait-primary",
+  "categories": ["health", "wellness", "medical", "lifestyle"],
+  "lang": "en",
+  "dir": "ltr"
+}

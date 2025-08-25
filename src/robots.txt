@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://thezenaxis.com/sitemap.xml
+
+# Disallow crawling of admin or private areas (if any)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Allow crawling of all pages
+Allow: /#home
+Allow: /#challenges/
+Allow: /#how-we-help
+Allow: /#our-story
+Allow: /#connect-with-us
+Allow: /#contact
+
+# Crawl-delay (optional, adjust as needed)
+Crawl-delay: 1
