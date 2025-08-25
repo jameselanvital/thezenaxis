@@ -750,7 +750,12 @@ export default function ContactUs() {
         style={{ left: "calc(66.667% + 23px)" }}
       >
         <p className="block leading-[30px] whitespace-pre">
-          knowmore@thezenaxis.com
+          <a 
+            href="mailto:knowmore@thezenaxis.com" 
+            className="text-white hover:text-blue-300 transition-colors"
+          >
+            knowmore@thezenaxis.com
+          </a>
         </p>
       </div>
       <div className="absolute bg-[#ffffff] bottom-[80.628%] left-[21.944%] right-[54.861%] rounded-[1px] top-[16.92%]">

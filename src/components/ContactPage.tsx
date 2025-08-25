@@ -55,7 +55,12 @@ export function ContactPage() {
                     <Phone className="w-5 h-5 text-energy-blue" />
                   </div>
                   <div className="text-left">
-                    <p className="text-sm sm:text-base text-black font-medium">+91 8825630815</p>
+                    <a 
+                      href="tel:+918825630815" 
+                      className="text-sm sm:text-base text-black font-medium hover:text-energy-blue transition-colors"
+                    >
+                      +91 8825630815
+                    </a>
                     <p className="text-xs sm:text-sm text-gray-600">Mon-Sat, 9 AM - 7 PM</p>
                   </div>
                 </div>
@@ -65,7 +70,12 @@ export function ContactPage() {
                     <Mail className="w-5 h-5 text-energy-blue" />
                   </div>
                   <div className="text-left">
-                    <p className="text-sm sm:text-base text-black font-medium">info@thezenaxis.com</p>
+                    <a 
+                      href="mailto:info@thezenaxis.com" 
+                      className="text-sm sm:text-base text-black font-medium hover:text-energy-blue transition-colors"
+                    >
+                      info@thezenaxis.com
+                    </a>
                     <p className="text-xs sm:text-sm text-gray-600">We'll respond within 24 hours</p>
                   </div>
                 </div>
@@ -329,7 +339,10 @@ ${formData.name}`);
                   <p className="text-sm text-gray-700 mb-3">
                     For urgent health concerns or existing patient support.
                   </p>
-                  <Button className="bg-energy-blue text-white hover:bg-energy-blue/90 w-full">
+                  <Button 
+                    className="bg-energy-blue text-white hover:bg-energy-blue/90 w-full"
+                    onClick={() => window.location.href = 'tel:+918825630815'}
+                  >
                     <Phone className="w-4 h-4 mr-2" />
                     Call Now: +91 8825630815
                   </Button>

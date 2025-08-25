@@ -73,11 +73,21 @@ export function Footer() {
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gray-400" />
-                <span className="text-sm text-gray-300">info@thezenaxis.com</span>
+                <a 
+                  href="mailto:info@thezenaxis.com" 
+                  className="text-sm text-gray-300 hover:text-energy-blue transition-colors"
+                >
+                  info@thezenaxis.com
+                </a>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-gray-400" />
-                <span className="text-sm text-gray-300">+91 8825630815</span>
+                <a 
+                  href="tel:+918825630815" 
+                  className="text-sm text-gray-300 hover:text-energy-blue transition-colors"
+                >
+                  +91 8825630815
+                </a>
               </div>
               <div className="flex items-center gap-3">
                 <MapPin className="w-4 h-4 text-gray-400" />
