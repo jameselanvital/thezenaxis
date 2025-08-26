@@ -3,7 +3,7 @@ import decorativeImage from 'figma:asset/4ff0224fac4b97e308af7bc512ad31ef9e08f9c
 import backgroundImage from 'figma:asset/d24c81169b694c22479e9fa95bf66e175d82e124.png';
 import { Button } from "../ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
-import { Star, Quote, Target, Users, Heart, Brain, Leaf, Shield, CheckCircle, Search, Sprout, UserCheck, Activity, Dumbbell, HeartHandshake } from "lucide-react"
+import { Brain, Search, Sprout, UserCheck, Activity, HeartHandshake } from "lucide-react"
 
 
 
@@ -17,33 +17,6 @@ const obesityTestimonials = [
   }
 ]
 
-const obesityStats = {
-  prevalence: "42.4% of adults",
-  prevalenceDesc: "are affected",
-  successRate: "88%",
-  successDesc: "see improvement",
-  timeframe: "3-9 months",
-  timeDesc: "average timeline"
-}
-
-const commonSymptoms = [
-  "Difficulty losing weight despite diet attempts",
-  "Chronic fatigue and low energy",
-  "Joint pain and mobility issues",
-  "Sleep apnea and poor sleep quality",
-  "High blood pressure",
-  "Insulin resistance and pre-diabetes"
-]
-
-const potentialComplications = [
-  "Type 2 diabetes development",
-  "Cardiovascular disease",
-  "Sleep apnea and breathing problems",
-  "Osteoarthritis and joint problems",
-  "Certain types of cancer",
-  "Mental health and self-esteem issues"
-]
-
 export function ObesityPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -51,14 +24,14 @@ export function ObesityPage() {
       <section className="lg:hidden bg-white">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6">
           {/* Mobile Hero Content */}
-          <div className="text-center pt-8 pb-8">
+          <div className="text-center pt-6 pb-6">
             {/* Mobile Subtitle - Elegant Typography */}
-            <h1 className="hero-subtitle-28pt text-gray-700 mb-8 sm:mb-10 max-w-3xl mx-auto px-2">
+            <h1 className="hero-subtitle-28pt text-gray-700 mb-6 sm:mb-8 max-w-3xl mx-auto px-2">
               Sustainable weight transformation through holistic wellness
             </h1>
 
             {/* Mobile Testimonial - Enhanced Spacing */}
-            <div className="mb-10 sm:mb-12 max-w-2xl mx-auto">
+            <div className="mb-8 sm:mb-10 max-w-2xl mx-auto">
               <p className="text-base sm:text-lg text-gray-700 italic leading-relaxed mb-4 sm:mb-5 px-4">
                 {obesityTestimonials[0].testimonial}
               </p>
@@ -72,19 +45,19 @@ export function ObesityPage() {
               </div>
             </div>
 
-            {/* Mobile Hero Image - Large and Clean - Positioned to Touch Button */}
+            {/* Mobile Hero Image - Better Positioned */}
             <div className="mb-4 sm:mb-6 flex justify-center">
-              <div className="relative obesity-mobile-clean-image-container">
+              <div className="relative w-full max-w-sm mx-auto">
                 <img
                   src={womanImage}
                   alt="Happy woman celebrating her wellness transformation"
-                  className="obesity-mobile-clean-image w-full h-auto object-contain translate-y-[20px]"
+                  className="w-full h-auto object-contain max-h-[350px] sm:max-h-[400px]"
                 />
               </div>
             </div>
             
-            {/* Mobile CTA Button - Moved Up 20px Total from Hero Image Bottom */}
-            <div className="flex justify-center px-4 -mt-4">
+            {/* Mobile CTA Button */}
+            <div className="flex justify-center px-4">
               <Button 
                 size="lg" 
                 className="bg-black text-white hover:bg-gray-800 w-full sm:w-auto max-w-xs min-h-[52px] text-base font-medium shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"
@@ -99,7 +72,7 @@ export function ObesityPage() {
 
       {/* Desktop Hero Section */}
       <section 
-        className="hidden lg:flex min-h-[85vh] items-center justify-center pt-8 xl:pt-16 pb-0 relative"
+        className="hidden lg:flex min-h-[85vh] items-center justify-center py-8 xl:py-16 relative"
         style={{ 
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
@@ -109,16 +82,16 @@ export function ObesityPage() {
         }}
       >
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[70vh]">
             {/* Left Column - Title and Description */}
-            <div className="lg:col-span-5 text-center lg:text-left order-2 lg:order-1">
+            <div className="lg:col-span-5 text-center lg:text-left order-2 lg:order-1 flex flex-col justify-center">
               {/* Desktop Subtitle */}
               <p className="hero-subtitle-18pt text-gray-700 mb-4 sm:mb-6 max-w-2xl mx-auto lg:mx-0">
                 Sustainable weight transformation through holistic wellness
               </p>
 
               {/* Desktop Testimonial */}
-              <div className="mt-4 sm:mt-6 mb-6 sm:mb-8">
+              <div className="mt-3 sm:mt-4 mb-4 sm:mb-6">
                 <p className="text-sm sm:text-base text-gray-700 italic leading-relaxed mb-3 sm:mb-4 px-2 lg:px-0">
                   {obesityTestimonials[0].testimonial}
                 </p>
@@ -145,12 +118,12 @@ export function ObesityPage() {
             </div>
 
             {/* Right Column - Desktop Hero Image */}
-            <div className="lg:col-span-7 order-1 lg:order-2 mb-4 lg:mb-0 lg:-mb-[100px]">
-              <div className="relative max-w-md sm:max-w-lg lg:max-w-none mx-auto">
+            <div className="lg:col-span-7 order-1 lg:order-2 flex items-center justify-center">
+              <div className="relative w-full max-w-lg mx-auto">
                 <img
                   src={womanImage}
                   alt="Happy woman celebrating her wellness transformation"
-                  className="w-full h-auto max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[600px] object-contain mt-[48px] translate-y-[28px]"
+                  className="w-full h-auto object-contain max-h-[500px] lg:max-h-[600px]"
                 />
               </div>
             </div>
@@ -159,13 +132,13 @@ export function ObesityPage() {
       </section>
 
       {/* Understanding Obesity Section */}
-      <section className="mt-0 sm:mt-0 lg:mt-0 pb-4 sm:pb-6 bg-gray-50">
+      <section className="pt-6 sm:pt-8 lg:pt-12 pb-4 sm:pb-6 bg-gray-50">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8">
             {/* Left Column - Decorative Image and Headline (7 columns) */}
-            <div className="lg:col-span-7 flex flex-col items-center justify-center lg:justify-start mt-[150px] -ml-[30px]">
+            <div className="lg:col-span-7 flex flex-col items-center justify-center lg:justify-start">
               {/* Decorative Image */}
-              <div className="mb-6 lg:mb-8 -ml-[20px]">
+              <div className="mb-6 lg:mb-8">
                 <img
                   src={decorativeImage}
                   alt="Decorative butterfly and floral design"
@@ -181,7 +154,7 @@ export function ObesityPage() {
             </div>
 
             {/* Right Column - Content (5 columns) */}
-            <div className="lg:col-span-5 text-center lg:text-left mb-8 sm:mb-10 lg:mb-12 pt-8 sm:pt-10 lg:pt-12 pr-0 lg:pr-5 ml-0 lg:-ml-[110px]">
+            <div className="lg:col-span-5 text-center lg:text-left mb-6 sm:mb-8 lg:mb-10 pt-4 sm:pt-6 lg:pt-8 pr-0 lg:pr-5 ml-0 lg:-ml-[110px]">
               <h2 className="wellness-heading-main text-black mb-3 sm:mb-4" style={{ lineHeight: '1.04' }}>
                 Obesity is a chronic, multifactorial condition—not a <span className="font-light energy-blue">failure of willpower</span>
               </h2>
@@ -227,18 +200,13 @@ export function ObesityPage() {
               </div>
             </div>
           </div>
-
-
-
         </div>
       </section>
 
-
-
       {/* Our Way of Healing Section */}
-      <section className="pt-0 sm:pt-0 lg:pt-0 pb-12 sm:pb-14 lg:pb-16 bg-gray-50 -mt-20">
+      <section className="pt-0 sm:pt-0 lg:pt-0 pb-8 sm:pb-10 lg:pb-12 bg-gray-50 -mt-12">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8">
             {/* Left Column - Empty to match top section layout (7 columns) */}
             <div className="lg:col-span-7">
               {/* Empty space to match the decorative image column from top section */}
@@ -349,7 +317,7 @@ export function ObesityPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-8 sm:py-10 lg:py-12 bg-black">
+      <section className="py-6 sm:py-8 lg:py-10 bg-black">
         <div className="container max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="hero-eternal-joy text-white mb-3 sm:mb-4 px-2">
             Ready to Start Your <span className="text-white italic">Transformation?</span>

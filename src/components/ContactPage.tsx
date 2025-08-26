@@ -19,6 +19,9 @@ export function ContactPage() {
     preferredContact: ''
   })
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -26,11 +29,101 @@ export function ContactPage() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log('Form submitted:', formData)
-    // You would integrate with your backend/email service here
+    
+    // Form validation
+    if (!formData.name.trim()) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+    if (!formData.email.trim()) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+    if (!formData.phone.trim()) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+    if (!formData.message.trim()) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    
+    try {
+      // Prepare form data for Web3Forms
+      const web3FormData = new FormData();
+      web3FormData.append('access_key', 'b570ccbc-ea8c-4806-9de3-45f172bc6cde');
+      web3FormData.append('name', formData.name);
+      web3FormData.append('email', formData.email);
+      web3FormData.append('phone', formData.phone);
+      web3FormData.append('subject', `Wellness Consultation Inquiry from ${formData.name}`);
+      web3FormData.append('message', `
+Health Concern: ${formData.subject || 'Not specified'}
+Preferred Contact: ${formData.preferredContact || 'Not specified'}
+
+Message:
+${formData.message}
+
+Contact Details:
+- Name: ${formData.name}
+- Email: ${formData.email}
+- Phone: ${formData.phone}
+      `.trim());
+      
+      // Add additional fields for better email formatting
+      web3FormData.append('from_name', 'The Zen Axis Website');
+      web3FormData.append('to_email', 'info@thezenaxis.com');
+      
+      // Add honeypot for spam protection
+      web3FormData.append('botcheck', '');
+      
+      // Submit to Web3Forms
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: web3FormData
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        setSubmitStatus('success');
+        // Clear form after successful submission
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: '',
+          preferredContact: ''
+        });
+        
+        // Auto-hide success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 5000);
+        
+      } else {
+        throw new Error(result.message || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus('error');
+      
+      // Auto-hide error message after 10 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 10000);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -145,8 +238,52 @@ export function ContactPage() {
                     Share your health concerns and we'll guide you towards optimal wellness.
                   </CardDescription>
                 </CardHeader>
+                
+                {/* Status Messages */}
+                {submitStatus === 'success' && (
+                  <div className="mx-6 mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-green-800">
+                          Message sent successfully! We'll get back to you within 24 hours.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {submitStatus === 'error' && (
+                  <div className="mx-6 mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-red-800">
+                          Please fill in all required fields. If the issue persists, contact us directly at info@thezenaxis.com
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                    {/* Honeypot field for spam protection */}
+                    <input 
+                      type="checkbox" 
+                      name="botcheck" 
+                      className="hidden" 
+                      style={{ display: 'none' }}
+                    />
+                    
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="name" className="text-sm font-medium text-black">Full Name *</Label>
@@ -156,7 +293,7 @@ export function ContactPage() {
                           placeholder="Enter your full name"
                           value={formData.name}
                           onChange={(e) => handleInputChange('name', e.target.value)}
-                          className="bg-white border-gray-300 focus:border-energy-blue"
+                          className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20"
                           required
                         />
                       </div>
@@ -168,7 +305,7 @@ export function ContactPage() {
                           placeholder="Enter your phone number"
                           value={formData.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="bg-white border-gray-300 focus:border-energy-blue"
+                          className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20"
                           required
                         />
                       </div>
@@ -182,7 +319,7 @@ export function ContactPage() {
                         placeholder="your.email@example.com"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="bg-white border-gray-300 focus:border-energy-blue"
+                        className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20"
                         required
                       />
                     </div>
@@ -190,8 +327,8 @@ export function ContactPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="subject" className="text-sm font-medium text-black">Health Concern</Label>
-                        <Select onValueChange={(value) => handleInputChange('subject', value)}>
-                          <SelectTrigger className="bg-white border-gray-300 focus:border-energy-blue">
+                        <Select onValueChange={(value) => handleInputChange('subject', value)} value={formData.subject}>
+                          <SelectTrigger className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20">
                             <SelectValue placeholder="Select your primary concern" />
                           </SelectTrigger>
                           <SelectContent>
@@ -211,8 +348,8 @@ export function ContactPage() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="contact-preference" className="text-sm font-medium text-black">Preferred Contact</Label>
-                        <Select onValueChange={(value) => handleInputChange('preferredContact', value)}>
-                          <SelectTrigger className="bg-white border-gray-300 focus:border-energy-blue">
+                        <Select onValueChange={(value) => handleInputChange('preferredContact', value)} value={formData.preferredContact}>
+                          <SelectTrigger className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20">
                             <SelectValue placeholder="How should we reach you?" />
                           </SelectTrigger>
                           <SelectContent>
@@ -232,40 +369,29 @@ export function ContactPage() {
                         placeholder="Share your symptoms, previous treatments, health goals, or any specific questions you have..."
                         value={formData.message}
                         onChange={(e) => handleInputChange('message', e.target.value)}
-                        className="bg-white border-gray-300 focus:border-energy-blue min-h-[120px] resize-none"
+                        className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20 min-h-[120px] resize-none"
                         rows={5}
+                        required
                       />
                     </div>
 
                     <Button 
-                      type="button" 
+                      type="submit" 
                       size="lg" 
-                      className="bg-black text-white hover:bg-gray-800 w-full sm:w-auto min-h-[48px] text-base"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const subject = encodeURIComponent('Wellness Consultation Inquiry');
-                        const body = encodeURIComponent(`Hello,
-
-I'm interested in learning more about your wellness services. Here are my details:
-
-Name: ${formData.name}
-Phone: ${formData.phone}
-Email: ${formData.email}
-Health Concern: ${formData.subject}
-Preferred Contact: ${formData.preferredContact}
-
-Message:
-${formData.message}
-
-Please get back to me to schedule a consultation.
-
-Best regards,
-${formData.name}`);
-                        window.location.href = `mailto:info@thezenaxis.com?subject=${subject}&body=${body}`;
-                      }}
+                      className="btn-mobile-friendly bg-black text-white hover:bg-gray-800 w-full min-h-[48px] text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={isSubmitting}
                     >
-                      <MessageSquare className="w-4 h-4 mr-2" />
-                      Send Message
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          Send Message
+                        </>
+                      )}
                     </Button>
                   </form>
                 </CardContent>
