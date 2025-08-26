@@ -3,9 +3,9 @@ import { Button } from "./ui/button";
 
 export function WellnessContent() {
   return (
-    <section className="py-16 lg:py-24 bg-white">
+    <section className="pt-4 sm:pt-6 lg:pt-8 pb-16 lg:pb-24 bg-white">
       <div className="container max-w-screen-xl px-4 mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center -mt-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Content column */}
           <div className="space-y-8">
             {/* Main heading */}

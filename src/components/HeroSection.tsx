@@ -13,10 +13,10 @@ export function HeroSection() {
         backgroundPosition: 'center 490px'
       }}
     >
-      <div className="container-responsive w-full py-8 sm:py-12 lg:py-16">
+      <div className="container-responsive w-full pt-8 sm:pt-12 lg:pt-16 pb-0">
         <div className="grid lg:grid-cols-5 gap-8 sm:gap-12 lg:gap-16 items-center">
           {/* Content Section */}
-          <div className="lg:col-span-2 space-y-6 sm:space-y-8 lg:space-y-10 text-center lg:text-left order-1 lg:order-1 z-10 relative">
+          <div className="lg:col-span-2 space-y-6 sm:space-y-8 lg:space-y-10 text-center lg:text-left order-1 lg:order-1 z-10 relative flex flex-col justify-center">
             <div className="space-y-4 sm:space-y-6 lg:space-y-8">
               <div className="space-y-3 sm:space-y-4 lg:space-y-6">
                 <h1 className="tracking-tight leading-tight">
@@ -59,10 +59,10 @@ export function HeroSection() {
           </div>
           
           {/* Image Section */}
-          <div className="lg:col-span-3 relative flex items-end justify-center order-2 lg:order-2">
+          <div className="lg:col-span-3 relative flex items-end justify-center order-2 lg:order-2 lg:self-end">
             <div className="relative w-full flex items-end justify-center">
               {/* Mobile/Tablet optimized container */}
-              <div className="block lg:hidden w-full max-w-sm sm:max-w-md mx-auto">
+              <div className="block lg:hidden w-full overflow-hidden">
                 <img 
                   src={butterflyImage} 
                   alt="Woman with butterflies representing transformation and wellness" 
@@ -70,27 +70,26 @@ export function HeroSection() {
                   style={{
                     maxHeight: '60vh',
                     width: 'auto',
-                    height: 'auto'
+                    height: 'auto',
+                    marginBottom: '-10px'
                   }}
                 />
               </div>
               
               {/* Desktop optimized container */}
-              <div className="hidden lg:block w-full h-full min-h-[600px] xl:min-h-[700px] flex items-end justify-center">
+              <div className="hidden lg:block w-full h-full min-h-[600px] xl:min-h-[700px] flex items-end justify-center relative overflow-hidden">
                 <img 
                   src={butterflyImage} 
                   alt="Woman with butterflies representing transformation and wellness" 
-                  className="w-full h-full max-w-none object-contain object-bottom"
+                  className="w-full h-auto max-w-none object-contain object-bottom"
                   style={{
-                    maxHeight: 'min(95vh, 800px)',
+                    maxHeight: 'min(95vh, 850px)',
                     width: 'auto',
                     height: 'auto',
-                    transform: 'translateY(83px)'
+                    marginBottom: '-20px'
                   }}
                 />
               </div>
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-background/10 via-transparent to-transparent pointer-events-none"></div>
             </div>
           </div>
         </div>

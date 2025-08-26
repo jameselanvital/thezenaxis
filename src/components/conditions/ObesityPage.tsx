@@ -72,7 +72,7 @@ export function ObesityPage() {
 
       {/* Desktop Hero Section */}
       <section 
-        className="hidden lg:flex min-h-[85vh] items-center justify-center py-8 xl:py-16 relative"
+        className="hidden lg:flex min-h-[85vh] items-center justify-center pt-8 xl:pt-16 pb-0 relative"
         style={{ 
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
@@ -118,12 +118,15 @@ export function ObesityPage() {
             </div>
 
             {/* Right Column - Desktop Hero Image */}
-            <div className="lg:col-span-7 order-1 lg:order-2 flex items-center justify-center">
+            <div className="lg:col-span-7 order-1 lg:order-2 flex items-end justify-center overflow-hidden">
               <div className="relative w-full max-w-lg mx-auto">
                 <img
                   src={womanImage}
                   alt="Happy woman celebrating her wellness transformation"
                   className="w-full h-auto object-contain max-h-[500px] lg:max-h-[600px]"
+                  style={{
+                    marginBottom: '-20px'
+                  }}
                 />
               </div>
             </div>
@@ -132,7 +135,7 @@ export function ObesityPage() {
       </section>
 
       {/* Understanding Obesity Section */}
-      <section className="pt-6 sm:pt-8 lg:pt-12 pb-4 sm:pb-6 bg-gray-50">
+      <section className="pt-2 sm:pt-4 lg:pt-6 pb-4 sm:pb-6 bg-gray-50">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8">
             {/* Left Column - Decorative Image and Headline (7 columns) */}

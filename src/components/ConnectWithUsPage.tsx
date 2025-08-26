@@ -3,8 +3,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { useState } from "react";
-import { toast } from "sonner";
 
 function TheZenAxisLogo() {
   return (
@@ -51,40 +51,76 @@ function TheZenAxisLogo() {
 }
 
 export function ConnectWithUsPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    
     try {
-      const formData = new FormData(e.currentTarget);
-      const firstName = formData.get('firstName') as string;
-      const secondName = formData.get('secondName') as string;
-      const mobile = formData.get('mobile') as string;
-      const email = formData.get('email') as string;
-      const message = formData.get('message') as string;
-
-      // Validate required fields
-      if (!firstName || !mobile || !email || !message) {
-        toast.error("Please fill in all required fields.");
-        setIsSubmitting(false);
-        return;
+      const formData = new FormData(e.target as HTMLFormElement)
+      
+      // Add Web3Forms access key
+      formData.append('access_key', 'b570ccbc-ea8c-4806-9de3-45f172bc6cde')
+      
+      // Submit to Web3Forms
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        setSubmitStatus('success')
+        // Reset form
+        ;(e.target as HTMLFormElement).reset()
+        
+        // Auto-hide success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle')
+        }, 5000)
+      } else {
+        console.log('Error', data)
+        setSubmitStatus('error')
       }
-
-      // Simulate form submission delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Navigate to thank you page
-      window.location.hash = 'thank-you';
-      
     } catch (error) {
-      console.error('Error submitting form:', error);
-      toast.error("Something went wrong. Please try again.");
+      console.error('Form submission error:', error)
+      setSubmitStatus('error')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
+
+  // Show success message if form submitted successfully
+  if (submitStatus === 'success') {
+    return (
+      <div className="min-h-screen bg-white relative flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="mb-6">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <h1 className="text-2xl font-semibold text-black mb-2">Thank You!</h1>
+            <p className="text-gray-600">
+              Your message has been sent successfully. We'll get back to you within 24 hours.
+            </p>
+          </div>
+          <Button 
+            onClick={() => window.location.hash = 'contact'}
+            className="bg-gray-800 text-white hover:bg-gray-900"
+          >
+            Return to Contact
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white relative">
@@ -107,6 +143,51 @@ export function ConnectWithUsPage() {
         {/* Contact Form */}
         <div className="max-w-2xl mx-auto">
           <form className="space-y-6 sm:space-y-8" onSubmit={handleSubmit}>
+
+            {/* Error Message */}
+            {submitStatus === 'error' && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-medium text-red-800">
+                      There was an error sending your message. Please try again.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Primary Concern Dropdown */}
+            <div className="space-y-2">
+              <Label htmlFor="primaryConcern" className="text-responsive-sm font-normal text-black">
+                Primary Concern*
+              </Label>
+              <Select name="primaryConcern" required>
+                <SelectTrigger className="input-mobile-friendly border-gray-600 bg-white text-gray-900">
+                  <SelectValue placeholder="Select your primary concern" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="weight-management">Weight Management</SelectItem>
+                  <SelectItem value="digestive-health">Digestive Health</SelectItem>
+                  <SelectItem value="energy-fatigue">Energy & Fatigue</SelectItem>
+                  <SelectItem value="hormonal-balance">Hormonal Balance</SelectItem>
+                  <SelectItem value="skin-health">Skin Health</SelectItem>
+                  <SelectItem value="stress-anxiety">Stress & Anxiety</SelectItem>
+                  <SelectItem value="sleep-issues">Sleep Issues</SelectItem>
+                  <SelectItem value="chronic-pain">Chronic Pain</SelectItem>
+                  <SelectItem value="immune-support">Immune Support</SelectItem>
+                  <SelectItem value="heart-health">Heart Health</SelectItem>
+                  <SelectItem value="mental-clarity">Mental Clarity & Focus</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Name Fields Row */}
             <div className="responsive-grid responsive-grid-sm-2 gap-4 sm:gap-6">
               <div className="space-y-2">

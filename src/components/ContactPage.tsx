@@ -3,126 +3,54 @@ import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
 import { Label } from "./ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import { Separator } from "./ui/separator"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { MapPin, Phone, Mail, Clock, MessageSquare, Calendar, Users, Heart } from "lucide-react"
 import { useState } from "react"
 
 export function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
-    preferredContact: ''
-  })
-
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }))
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Form validation
-    if (!formData.name.trim()) {
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-      return;
-    }
-    if (!formData.email.trim()) {
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-      return;
-    }
-    if (!formData.phone.trim()) {
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-      return;
-    }
-    if (!formData.message.trim()) {
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-      return;
-    }
-    
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
     
     try {
-      // Prepare form data for Web3Forms
-      const web3FormData = new FormData();
-      web3FormData.append('access_key', 'b570ccbc-ea8c-4806-9de3-45f172bc6cde');
-      web3FormData.append('name', formData.name);
-      web3FormData.append('email', formData.email);
-      web3FormData.append('phone', formData.phone);
-      web3FormData.append('subject', `Wellness Consultation Inquiry from ${formData.name}`);
-      web3FormData.append('message', `
-Health Concern: ${formData.subject || 'Not specified'}
-Preferred Contact: ${formData.preferredContact || 'Not specified'}
-
-Message:
-${formData.message}
-
-Contact Details:
-- Name: ${formData.name}
-- Email: ${formData.email}
-- Phone: ${formData.phone}
-      `.trim());
+      const formData = new FormData(e.target as HTMLFormElement)
       
-      // Add additional fields for better email formatting
-      web3FormData.append('from_name', 'The Zen Axis Website');
-      web3FormData.append('to_email', 'info@thezenaxis.com');
-      
-      // Add honeypot for spam protection
-      web3FormData.append('botcheck', '');
+      // Add Web3Forms access key
+      formData.append('access_key', 'b570ccbc-ea8c-4806-9de3-45f172bc6cde')
       
       // Submit to Web3Forms
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        body: web3FormData
-      });
+        body: formData
+      })
       
-      const result = await response.json();
+      const data = await response.json()
       
-      if (result.success) {
-        setSubmitStatus('success');
-        // Clear form after successful submission
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: '',
-          preferredContact: ''
-        });
+      if (data.success) {
+        setSubmitStatus('success')
+        // Reset form
+        ;(e.target as HTMLFormElement).reset()
         
         // Auto-hide success message after 5 seconds
         setTimeout(() => {
-          setSubmitStatus('idle');
-        }, 5000);
-        
+          setSubmitStatus('idle')
+        }, 5000)
       } else {
-        throw new Error(result.message || 'Failed to send message');
+        console.log('Error', data)
+        setSubmitStatus('error')
       }
     } catch (error) {
-      console.error('Form submission error:', error);
-      setSubmitStatus('error');
-      
-      // Auto-hide error message after 10 seconds
-      setTimeout(() => {
-        setSubmitStatus('idle');
-      }, 10000);
+      console.error('Form submission error:', error)
+      setSubmitStatus('error')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
   }
 
@@ -131,9 +59,9 @@ Contact Details:
       {/* Hero Section */}
       <section className="bg-white min-h-[70vh] sm:min-h-[75vh] lg:min-h-[85vh] flex items-center justify-center pt-8 sm:pt-10 lg:pt-12 xl:pt-16 pb-0">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-0 items-center">
             {/* Left Column - Contact Information */}
-            <div className="lg:col-span-5 text-center lg:text-left order-2 lg:order-1">
+            <div className="lg:col-span-5 text-center lg:text-left order-2 lg:order-1 lg:pr-8">
               <h1 className="hero-eternal-joy text-black mb-4 sm:mb-6">
                 Connect with<br /><span className="energy-blue italic">The Zen Axis</span>
               </h1>
@@ -203,12 +131,12 @@ Contact Details:
             </div>
 
             {/* Right Column - Hero Image */}
-            <div className="lg:col-span-7 order-1 lg:order-2 mb-4 lg:mb-0 lg:-mb-[35px]">
-              <div className="relative max-w-md sm:max-w-lg lg:max-w-none mx-auto">
+            <div className="lg:col-span-7 order-1 lg:order-2 mb-4 lg:mb-0">
+              <div className="relative w-full h-full overflow-hidden">
                 <img
                   src={womanImage}
                   alt="Wellness consultant ready to help you"
-                  className="w-full h-auto max-h-[300px] sm:max-h-[350px] md:max-h-[400px] lg:max-h-[500px] object-contain"
+                  className="w-full h-full min-h-[300px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[500px] object-cover object-center"
                 />
               </div>
             </div>
@@ -267,7 +195,7 @@ Contact Details:
                       </div>
                       <div className="ml-3">
                         <p className="text-sm font-medium text-red-800">
-                          Please fill in all required fields. If the issue persists, contact us directly at info@thezenaxis.com
+                          Please check your form entries and try again. If the issue persists, contact us directly at info@thezenaxis.com
                         </p>
                       </div>
                     </div>
@@ -289,11 +217,10 @@ Contact Details:
                         <Label htmlFor="name" className="text-sm font-medium text-black">Full Name *</Label>
                         <Input
                           id="name"
+                          name="name"
                           type="text"
                           placeholder="Enter your full name"
-                          value={formData.name}
-                          onChange={(e) => handleInputChange('name', e.target.value)}
-                          className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20"
+                          className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20 text-gray-900"
                           required
                         />
                       </div>
@@ -301,11 +228,10 @@ Contact Details:
                         <Label htmlFor="phone" className="text-sm font-medium text-black">Phone Number *</Label>
                         <Input
                           id="phone"
+                          name="phone"
                           type="tel"
                           placeholder="Enter your phone number"
-                          value={formData.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20"
+                          className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20 text-gray-900"
                           required
                         />
                       </div>
@@ -315,11 +241,10 @@ Contact Details:
                       <Label htmlFor="email" className="text-sm font-medium text-black">Email Address *</Label>
                       <Input
                         id="email"
+                        name="email"
                         type="email"
                         placeholder="your.email@example.com"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20"
+                        className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20 text-gray-900"
                         required
                       />
                     </div>
@@ -327,8 +252,8 @@ Contact Details:
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="subject" className="text-sm font-medium text-black">Health Concern</Label>
-                        <Select onValueChange={(value) => handleInputChange('subject', value)} value={formData.subject}>
-                          <SelectTrigger className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20">
+                        <Select name="subject">
+                          <SelectTrigger className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20 text-gray-900">
                             <SelectValue placeholder="Select your primary concern" />
                           </SelectTrigger>
                           <SelectContent>
@@ -348,8 +273,8 @@ Contact Details:
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="contact-preference" className="text-sm font-medium text-black">Preferred Contact</Label>
-                        <Select onValueChange={(value) => handleInputChange('preferredContact', value)} value={formData.preferredContact}>
-                          <SelectTrigger className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20">
+                        <Select name="preferred_contact">
+                          <SelectTrigger className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20 text-gray-900">
                             <SelectValue placeholder="How should we reach you?" />
                           </SelectTrigger>
                           <SelectContent>
@@ -363,13 +288,12 @@ Contact Details:
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="message" className="text-sm font-medium text-black">Tell us about your health journey</Label>
+                      <Label htmlFor="message" className="text-sm font-medium text-black">Tell us about your health journey *</Label>
                       <Textarea
                         id="message"
+                        name="message"
                         placeholder="Share your symptoms, previous treatments, health goals, or any specific questions you have..."
-                        value={formData.message}
-                        onChange={(e) => handleInputChange('message', e.target.value)}
-                        className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20 min-h-[120px] resize-none"
+                        className="input-mobile-friendly bg-white border-gray-300 focus:border-energy-blue focus:ring-energy-blue/20 min-h-[120px] resize-none text-gray-900"
                         rows={5}
                         required
                       />
