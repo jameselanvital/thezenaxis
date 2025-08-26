@@ -1,4 +1,5 @@
 import svgPaths from "./svg-494zffibmk";
+import { useState } from "react";
 
 function TheZenAxisReverse1() {
   return (
@@ -516,23 +517,73 @@ function MegaMenuTza() {
   );
 }
 
-function JoinNow() {
+function JoinNow({ onClick, isSubmitting }: { onClick: () => void, isSubmitting: boolean }) {
   return (
-    <div
-      className="absolute bg-[#2e2d2d] box-border content-stretch flex flex-row gap-2.5 h-[60px] items-center justify-center px-[91px] py-[19px] rounded-lg top-[838px] w-[275px]"
+    <button
+      type="submit"
+      onClick={onClick}
+      disabled={isSubmitting}
+      className="absolute bg-[#2e2d2d] box-border content-stretch flex flex-row gap-2.5 h-[60px] items-center justify-center px-[91px] py-[19px] rounded-lg top-[838px] w-[275px] hover:bg-[#404040] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       data-name="Join Now"
       style={{ left: "calc(16.667% + 73px)" }}
     >
       <div className="font-['Lato:SemiBold',_sans-serif] leading-[0] not-italic relative shrink-0 text-[#ffffff] text-[18px] text-left text-nowrap">
-        <p className="block leading-[normal] whitespace-pre">SUBMIT</p>
+        <p className="block leading-[normal] whitespace-pre">
+          {isSubmitting ? 'SUBMITTING...' : 'SUBMIT'}
+        </p>
       </div>
-    </div>
+    </button>
   );
 }
 
 export default function ContactUs() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    
+    try {
+      const formData = new FormData(e.target as HTMLFormElement)
+      
+      // Add Web3Forms access key
+      formData.append('access_key', 'b570ccbc-ea8c-4806-9de3-45f172bc6cde')
+      
+      // Submit to Web3Forms
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        setSubmitStatus('success')
+        // Reset form
+        ;(e.target as HTMLFormElement).reset()
+        
+        // Auto-hide success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle')
+        }, 5000)
+      } else {
+        console.log('Error', data)
+        setSubmitStatus('error')
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <div className="bg-[#ffffff] relative size-full" data-name="Contact Us">
+      <form onSubmit={handleSubmit}>
       <Group1 />
       <Home />
       <Time />
@@ -760,6 +811,13 @@ export default function ContactUs() {
       </div>
       <div className="absolute bg-[#ffffff] bottom-[80.628%] left-[21.944%] right-[54.861%] rounded-[1px] top-[16.92%]">
         <div className="absolute border border-[#3d3c3a] border-solid inset-0 pointer-events-none rounded-[1px]" />
+        <input 
+          type="text" 
+          name="firstName" 
+          required 
+          className="absolute inset-0 w-full h-full bg-transparent text-gray-900 text-[16px] px-3 py-2 outline-none"
+          placeholder="Enter your first name"
+        />
       </div>
       <div
         className="absolute font-['Lato:Regular',_sans-serif] leading-[0] not-italic text-[#000000] text-[14px] text-left text-nowrap top-[319px]"
@@ -769,6 +827,12 @@ export default function ContactUs() {
       </div>
       <div className="absolute bg-[#ffffff] bottom-[80.628%] left-[54.583%] right-[21.944%] rounded-[1px] top-[16.92%]">
         <div className="absolute border border-[#3d3c3a] border-solid inset-0 pointer-events-none rounded-[1px]" />
+        <input 
+          type="text" 
+          name="lastName" 
+          className="absolute inset-0 w-full h-full bg-transparent text-gray-900 text-[16px] px-3 py-2 outline-none"
+          placeholder="Enter your second name"
+        />
       </div>
       <div
         className="absolute font-['Lato:Regular',_sans-serif] leading-[0] not-italic text-[#000000] text-[14px] text-left text-nowrap top-[319px]"
@@ -778,6 +842,13 @@ export default function ContactUs() {
       </div>
       <div className="absolute bg-[#ffffff] bottom-[74.448%] left-[21.944%] right-[54.861%] rounded-[1px] top-[23.1%]">
         <div className="absolute border border-[#3d3c3a] border-solid inset-0 pointer-events-none rounded-[1px]" />
+        <input 
+          type="tel" 
+          name="mobile" 
+          required 
+          className="absolute inset-0 w-full h-full bg-transparent text-gray-900 text-[16px] px-3 py-2 outline-none"
+          placeholder="Enter your mobile number"
+        />
       </div>
       <div
         className="absolute font-['Lato:Regular',_sans-serif] leading-[0] not-italic text-[#000000] text-[14px] text-left text-nowrap top-[445px]"
@@ -787,15 +858,28 @@ export default function ContactUs() {
       </div>
       <div className="absolute bg-[#ffffff] bottom-[63.462%] left-[21.944%] right-[21.944%] rounded-[1px] top-[29.279%]">
         <div className="absolute border border-[#3d3c3a] border-solid inset-0 pointer-events-none rounded-[1px]" />
+        <textarea 
+          name="message" 
+          required 
+          className="absolute inset-0 w-full h-full bg-transparent text-gray-900 text-[16px] px-3 py-2 outline-none resize-none"
+          placeholder="Tell us what you'd like to achieve with your health."
+        />
       </div>
       <div
         className="absolute font-['Lato:Regular',_sans-serif] leading-[0] not-italic text-[#000000] text-[14px] text-left text-nowrap top-[571px]"
         style={{ left: "calc(16.667% + 76px)" }}
       >
-        <p className="block leading-[normal] whitespace-pre">Mobile*</p>
+        <p className="block leading-[normal] whitespace-pre">Message*</p>
       </div>
       <div className="absolute bg-[#ffffff] bottom-[74.448%] left-[54.583%] right-[21.944%] rounded-[1px] top-[23.1%]">
         <div className="absolute border border-[#3d3c3a] border-solid inset-0 pointer-events-none rounded-[1px]" />
+        <input 
+          type="email" 
+          name="email" 
+          required 
+          className="absolute inset-0 w-full h-full bg-transparent text-gray-900 text-[16px] px-3 py-2 outline-none"
+          placeholder="Enter your email"
+        />
       </div>
       <div
         className="absolute font-['Lato:Regular',_sans-serif] leading-[0] not-italic text-[#000000] text-[14px] text-left text-nowrap top-[445px]"
@@ -848,7 +932,31 @@ export default function ContactUs() {
         <p className="block mb-0">{`By submitting this form, you authorize us to contact you via phone or SMS, irrespective of your DND status, `}</p>
         <p className="block">in accordance with applicable regulations.</p>
       </div>
-      <JoinNow />
+      
+      <JoinNow 
+        onClick={() => {}}
+        isSubmitting={isSubmitting}
+      />
+      
+      {/* Success/Error Messages */}
+      {submitStatus === 'success' && (
+        <div 
+          className="absolute font-['Lato:Regular',_sans-serif] leading-[0] not-italic text-green-600 text-[16px] text-left text-nowrap top-[760px]"
+          style={{ left: "calc(16.667% + 79px)" }}
+        >
+          <p className="block leading-[normal] whitespace-pre">Thank you! Your message has been sent successfully.</p>
+        </div>
+      )}
+      
+      {submitStatus === 'error' && (
+        <div 
+          className="absolute font-['Lato:Regular',_sans-serif] leading-[0] not-italic text-red-600 text-[16px] text-left text-nowrap top-[760px]"
+          style={{ left: "calc(16.667% + 79px)" }}
+        >
+          <p className="block leading-[normal] whitespace-pre">Sorry, there was an error sending your message. Please try again.</p>
+        </div>
+      )}
+      </form>
     </div>
   );
 }

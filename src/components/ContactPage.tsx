@@ -23,12 +23,13 @@ export function ContactPage() {
       const formData = new FormData(e.target as HTMLFormElement)
       
       // Add Web3Forms access key
-      formData.append('access_key', 'b570ccbc-ea8c-4806-9de3-45f172bc6cde')
+      formData.append('access_key', '9338828d-a869-4aaa-ad53-73c955a5624a')
       
       // Submit to Web3Forms
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         body: formData
+
       })
       
       const data = await response.json()
