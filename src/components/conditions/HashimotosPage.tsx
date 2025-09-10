@@ -70,19 +70,19 @@ export function HashimotosPage() {
               </div>
             </div>
 
-            {/* Mobile Hero Image - Large and Clean - Positioned to Touch Button */}
-            <div className="mb-4 sm:mb-6 flex justify-center">
-              <div className="relative obesity-mobile-clean-image-container">
+            {/* Mobile Hero Image - Large and Clean - Proper Spacing */}
+            <div className="mb-8 sm:mb-10 flex justify-center">
+              <div className="relative max-w-[350px] w-full mx-auto">
                 <img
                   src={womanImage}
                   alt="Happy person celebrating their Hashimoto's healing"
-                  className="obesity-mobile-clean-image w-full h-auto object-contain"
+                  className="w-full h-auto object-contain max-h-[400px] sm:max-h-[450px]"
                 />
               </div>
             </div>
             
-            {/* Mobile CTA Button - Moved Up 20px Total from Hero Image Bottom */}
-            <div className="flex justify-center px-4 -mt-4">
+            {/* Mobile CTA Button - Proper Spacing */}
+            <div className="flex justify-center px-4 mt-6">
               <Button 
                 size="lg" 
                 className="bg-black text-white hover:bg-gray-800 w-full sm:w-auto max-w-xs min-h-[52px] text-base font-medium shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"

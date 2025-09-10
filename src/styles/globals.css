@@ -1016,4 +1016,52 @@
                   0 6px 12px -6px rgba(0, 0, 0, 0.1);
     }
   }
+
+  /* Mobile Condition Pages Hero Section - Prevent Image Overlap */
+  @media (max-width: 767px) {
+    /* Global mobile condition page fixes */
+    .condition-mobile-hero {
+      padding-bottom: 2rem;
+    }
+
+    /* Ensure proper spacing for all mobile condition hero images */
+    .condition-mobile-image-container {
+      margin-bottom: 2rem !important;
+      max-width: 350px !important;
+      width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    /* Consistent image sizing across all condition pages */
+    .condition-mobile-image-container img {
+      max-height: 350px !important;
+      width: 100% !important;
+      height: auto !important;
+      object-fit: contain !important;
+    }
+
+    /* Remove any problematic transforms and negative margins */
+    section.lg\:hidden img[class*="translate-"] {
+      transform: none !important;
+    }
+
+    section.lg\:hidden div[class*="-mt-"] {
+      margin-top: 1.5rem !important;
+    }
+  }
+
+  /* Very small screens - additional spacing */
+  @media (max-width: 480px) {
+    .condition-mobile-image-container img {
+      max-height: 300px !important;
+    }
+  }
+
+  /* Ultra small screens - compact layout */
+  @media (max-width: 375px) {
+    .condition-mobile-image-container img {
+      max-height: 280px !important;
+    }
+  }
 }
