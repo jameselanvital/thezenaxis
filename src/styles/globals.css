@@ -42,7 +42,7 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #333333;
   --sidebar-ring: #555555;
-  --energy-blue: #044F90;
+  --energy-blue: #71c4e8;
   
   /* Responsive spacing system */
   --spacing-xs: 0.25rem;    /* 4px */
@@ -98,7 +98,7 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #333333;
   --sidebar-ring: #555555;
-  --energy-blue: #044F90;
+  --energy-blue: #71c4e8;
 }
 
 @theme inline {
