@@ -175,9 +175,66 @@
   }
 }
 
+/* CRITICAL: Immediate styling to prevent flash of white content */
+/* This must be at the top to load first */
+header, nav, .sticky, [class*="Navigation"] {
+  background: #000 !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Immediate styling to prevent flash of white content */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Reset margins and padding to prevent gaps */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Immediate header styling - applies before JavaScript */
+header,
+[class*="Navigation"],
+nav,
+.sticky,
+.force-dark-header,
+.dark-header-forced,
+.mobile-dark-header {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+  color: white !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+  width: 100% !important;
+}
+
+/* Target Tailwind classes that might be applied */
+.bg-white,
+.bg-white\/95,
+.bg-gray-50,
+.bg-background {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+}
+
 /* Universal header styling - works across all browsers */
 header {
   background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -190,6 +247,202 @@ header {
   will-change: transform;
   min-height: 64px;
   color: white !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Force dark header with maximum specificity */
+header,
+header.sticky,
+header[class*="sticky"],
+header[class*="bg-"],
+div header,
+body header,
+html header,
+header.sticky.top-0.z-50,
+header[style*="background"],
+.safe-area-top header,
+[class*="safe-area"] header {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+  color: white !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Override any specific Tailwind utilities */
+header[class*="bg-white"],
+header[class*="bg-gray"],
+header[class*="bg-slate"],
+header.bg-white\/95,
+header.bg-black\/95 {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+}
+
+/* Force dark header with specific class */
+.dark-header-forced,
+header.dark-header-forced,
+*[class*="dark-header-forced"] {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+  color: white !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Ultimate override - highest specificity possible */
+html body header[class*="dark-header-forced"],
+html body div header[class*="dark-header-forced"],
+html body main header[class*="dark-header-forced"],
+html body header,
+html body div header,
+html body main header,
+html body .safe-area-top header,
+html body div[class*="safe"] header {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+  color: white !important;
+}
+
+/* Override any safe-area or container styling */
+.safe-area-top,
+.safe-area-top > *,
+div[class*="safe-area"] {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.safe-area-top header,
+.safe-area-top > header,
+div[class*="safe-area"] header {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+  color: white !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Target any navigation links to ensure they're white */
+header a,
+header button,
+header [role="button"],
+.dark-header-forced a,
+.dark-header-forced button {
+  color: white !important;
+}
+
+/* Force dark theme on navigation menu items */
+header .nav-sleek,
+.dark-header-forced .nav-sleek {
+  color: white !important;
+}
+
+/* Force dark header with new class */
+.force-dark-header,
+header.force-dark-header,
+html body header.force-dark-header,
+html body div header.force-dark-header {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+  color: white !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Override ANY Tailwind background utilities */
+header[class*="bg-"],
+.force-dark-header[class*="bg-"],
+.dark-header-forced[class*="bg-"] {
+  background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
+}
+
+/* Mobile-specific header forcing */
+@media (max-width: 1024px) {
+  /* Remove any default mobile margins/padding */
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  .safe-area-top {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  
+  header,
+  header.sticky,
+  header[class*="sticky"],
+  .force-dark-header,
+  .dark-header-forced,
+  html body header,
+  html body div header,
+  html body .safe-area-top header {
+    background: rgba(0, 0, 0, 0.95) !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    color: white !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    top: 0 !important;
+  }
+}
+
+/* Extra mobile specificity for problematic devices */
+@media (max-width: 768px) {
+  header,
+  header *,
+  .force-dark-header,
+  .dark-header-forced {
+    background: rgba(0, 0, 0, 0.95) !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    color: white !important;
+  }
+  
+  /* Force all header children to inherit white text */
+  header *,
+  .force-dark-header *,
+  .dark-header-forced * {
+    color: white !important;
+  }
+  
+  /* Mobile-specific dark header class */
+  .mobile-dark-header,
+  header.mobile-dark-header {
+    background: rgba(0, 0, 0, 0.95) !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    background-image: none !important;
+    color: white !important;
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+  }
+}
+
+/* Mobile browser specific targeting */
+@media (hover: none) and (pointer: coarse) {
+  /* This targets touch devices specifically */
+  header,
+  .force-dark-header,
+  .dark-header-forced,
+  .mobile-dark-header {
+    background: rgba(0, 0, 0, 0.95) !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    background-image: none !important;
+    color: white !important;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  header,
+  .force-dark-header,
+  .dark-header-forced {
+    background: rgba(0, 0, 0, 0.95) !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    backdrop-filter: blur(10px) !important;
+  }
 }
 
 /* Ensure header logo images display correctly */
@@ -208,34 +461,16 @@ header .logo-container-header {
   min-height: 60px;
 }
 
-/* Force dark header background with highest specificity */
-header.dark-header,
-header[class*="sticky"],
-.dark-header,
-header[class*="bg-"],
-header.bg-black\/95,
-header.bg-white,
-header[style*="background"] {
-  background: rgba(0, 0, 0, 0.95) !important;
-  background-color: rgba(0, 0, 0, 0.95) !important;
-  color: white !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Override any Tailwind background utilities on header */
-header[class*="bg-white"],
-header[class*="bg-gray"],
-header[class*="bg-slate"] {
-  background: rgba(0, 0, 0, 0.95) !important;
-  background-color: rgba(0, 0, 0, 0.95) !important;
-}
-
 /* Ensure header styling overrides any Tailwind classes */
-.sticky {
+.sticky,
+header.sticky,
+*[class*="sticky"] {
   background: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.95) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
 }
 
 /* Target the specific header classes used in the Navigation component */

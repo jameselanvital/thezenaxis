@@ -72,47 +72,120 @@ export function Navigation() {
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
 
-  // Force dark header styling
+  // Force dark header styling aggressively with mobile-specific handling
   React.useEffect(() => {
-    const applyDarkHeaderStyles = () => {
+    const forceDarkHeader = () => {
       if (headerRef.current) {
         const header = headerRef.current
-        header.style.setProperty('background-color', 'rgba(0, 0, 0, 0.95)', 'important')
+        
+        // Remove any conflicting classes first
+        header.classList.remove('bg-white', 'bg-white/95', 'bg-gray-50', 'bg-background')
+        
+        // Apply dark styles with maximum priority
         header.style.setProperty('background', 'rgba(0, 0, 0, 0.95)', 'important')
+        header.style.setProperty('background-color', 'rgba(0, 0, 0, 0.95)', 'important')
         header.style.setProperty('color', 'white', 'important')
         header.style.setProperty('backdrop-filter', 'blur(10px)', 'important')
-        ;(header.style as any).setProperty('-webkit-backdrop-filter', 'blur(10px)', 'important')
+        header.style.setProperty('-webkit-backdrop-filter', 'blur(10px)', 'important')
         header.style.setProperty('border-bottom', '1px solid rgba(255, 255, 255, 0.1)', 'important')
-        header.style.position = 'sticky'
-        header.style.top = '0'
-        header.style.zIndex = '50'
-        header.style.width = '100%'
-        header.style.minHeight = '64px'
         
-        // Add class for CSS targeting
-        header.classList.add('dark-header')
+        // Ensure no gaps by removing margins/padding and positioning correctly
+        header.style.setProperty('margin', '0', 'important')
+        header.style.setProperty('padding', '0', 'important')
+        header.style.setProperty('top', '0', 'important')
+        header.style.setProperty('position', 'sticky', 'important')
+        header.style.setProperty('width', '100%', 'important')
+        
+        // Mobile-specific styling
+        const isMobile = window.innerWidth <= 768
+        if (isMobile) {
+          header.style.setProperty('background-image', 'none', 'important')
+          header.style.setProperty('background-attachment', 'scroll', 'important')
+          // Force hardware acceleration on mobile
+          header.style.setProperty('transform', 'translateZ(0)', 'important')
+          header.style.setProperty('-webkit-transform', 'translateZ(0)', 'important')
+        }
+        
+        // Add the dark header class
+        header.classList.add('force-dark-header', 'mobile-dark-header')
       }
+      
+      // Also apply to any other header elements globally
+      const allHeaders = document.querySelectorAll('header')
+      allHeaders.forEach(h => {
+        const headerEl = h as HTMLElement
+        headerEl.style.setProperty('background', 'rgba(0, 0, 0, 0.95)', 'important')
+        headerEl.style.setProperty('background-color', 'rgba(0, 0, 0, 0.95)', 'important')
+        headerEl.style.setProperty('color', 'white', 'important')
+        headerEl.style.setProperty('margin', '0', 'important')
+        headerEl.style.setProperty('padding', '0', 'important')
+        headerEl.style.setProperty('top', '0', 'important')
+        headerEl.classList.add('force-dark-header', 'mobile-dark-header')
+        
+        // Mobile-specific global styling
+        const isMobile = window.innerWidth <= 768
+        if (isMobile) {
+          headerEl.style.setProperty('background-image', 'none', 'important')
+          headerEl.style.setProperty('transform', 'translateZ(0)', 'important')
+        }
+      })
+      
+      // Remove margins from parent containers that might cause gaps
+      const safeAreaContainers = document.querySelectorAll('.safe-area-top, [class*="safe-area"]')
+      safeAreaContainers.forEach(container => {
+        const containerEl = container as HTMLElement
+        containerEl.style.setProperty('margin', '0', 'important')
+        containerEl.style.setProperty('padding', '0', 'important')
+        containerEl.style.setProperty('margin-top', '0', 'important')
+        containerEl.style.setProperty('padding-top', '0', 'important')
+      })
     }
 
-    // Apply immediately
-    applyDarkHeaderStyles()
+    // Apply immediately and repeatedly with more frequent intervals for mobile
+    forceDarkHeader()
+    setTimeout(forceDarkHeader, 25)
+    setTimeout(forceDarkHeader, 75)
+    setTimeout(forceDarkHeader, 150)
+    setTimeout(forceDarkHeader, 300)
+    setTimeout(forceDarkHeader, 600)
+    setTimeout(forceDarkHeader, 1000)
     
-    // Apply again after a short delay to ensure it overrides any conflicting styles
-    setTimeout(applyDarkHeaderStyles, 100)
-    setTimeout(applyDarkHeaderStyles, 500)
+    // Apply on resize to handle mobile orientation changes
+    const handleResize = () => {
+      setTimeout(forceDarkHeader, 100)
+    }
+    window.addEventListener('resize', handleResize)
+    
+    // Apply on touch events for mobile
+    const handleTouch = () => {
+      setTimeout(forceDarkHeader, 50)
+    }
+    document.addEventListener('touchstart', handleTouch, { passive: true })
+    
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      document.removeEventListener('touchstart', handleTouch)
+    }
   }, [])
 
   return (
     <header 
       ref={headerRef}
-      className="dark-header sticky top-0 z-50 w-full backdrop-blur-md text-white"
+      className="force-dark-header dark-header-forced sticky top-0 z-50 w-full backdrop-blur-md border-b border-white/10 text-white"
       style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.95) !important',
+        background: 'rgba(0, 0, 0, 0.95)',
+        backgroundColor: 'rgba(0, 0, 0, 0.95)',
+        color: 'white',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         minHeight: '64px',
-        background: 'rgba(0, 0, 0, 0.95) !important'
+        margin: '0',
+        padding: '0',
+        position: 'sticky',
+        top: '0',
+        width: '100%',
+        zIndex: '50'
       }}
     >
       <div className="container-responsive flex h-16 sm:h-20 md:h-24 lg:h-28 max-w-screen-xl items-center justify-between">
