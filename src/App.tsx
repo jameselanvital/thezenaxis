@@ -30,8 +30,10 @@ import { HowWeHelpPage } from "./components/HowWeHelpPage"
 import { OurStoryPage } from "./components/OurStoryPage"
 import { ConnectWithUsPage } from "./components/ConnectWithUsPage"
 import { ThankYouPage } from "./components/ThankYouPage"
+import { SafariBrowserNotice } from "./components/SafariBrowserNotice"
 import { Toaster } from "./components/ui/sonner"
 import { useState, useEffect } from "react"
+import { applySafariFixes, disableProblematicFeatures } from "./utils/safariDetection"
 
 function getPageFromHash() {
   const hash = window.location.hash.slice(1) // Remove the #
@@ -50,6 +52,49 @@ export default function App() {
 
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  // Apply Safari-specific fixes
+  useEffect(() => {
+    applySafariFixes()
+    disableProblematicFeatures()
+  }, [])
+
+  // Additional Safari fix for colorful overlay
+  useEffect(() => {
+    const userAgent = navigator.userAgent
+    const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent) && 
+                     /webkit/i.test(userAgent) && 
+                     !/chrome/i.test(userAgent)
+    
+    if (isSafari) {
+      // Add a style tag to specifically target the colorful overlay issue
+      const style = document.createElement('style')
+      style.textContent = `
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+          /* Only target Safari and only disable backdrop-blur that causes issues */
+          .hero-responsive [class*="backdrop-blur"],
+          .testimonials [class*="backdrop-blur"],
+          .timeline [class*="backdrop-blur"] {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+          }
+          
+          /* Preserve header backdrop-blur */
+          header [class*="backdrop-blur"] {
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+          }
+        }
+      `
+      document.head.appendChild(style)
+      
+      return () => {
+        document.head.removeChild(style)
+      }
+    }
   }, [])
 
   const renderPage = () => {
@@ -114,6 +159,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Safari Browser Notice */}
+      <SafariBrowserNotice />
+      
       {/* Safe area support for devices with notches */}
       <div className="safe-area-top">
         <Navigation />
