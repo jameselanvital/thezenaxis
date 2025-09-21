@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, Heart, Activity, Zap, Brain, Shield, Stethoscope, CircleDot, AlertCircle, Eye, Droplets, Baby, Menu, X } from "lucide-react"
+import { ChevronDown, Heart, Activity, Zap, Brain, Shield, Stethoscope, CircleDot, AlertCircle, Eye, Droplets, Baby, Menu } from "lucide-react" 
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -68,11 +68,53 @@ const wellnessCategories = [
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
+  const headerRef = React.useRef<HTMLElement>(null)
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
 
+  // Force dark header styling
+  React.useEffect(() => {
+    const applyDarkHeaderStyles = () => {
+      if (headerRef.current) {
+        const header = headerRef.current
+        header.style.setProperty('background-color', 'rgba(0, 0, 0, 0.95)', 'important')
+        header.style.setProperty('background', 'rgba(0, 0, 0, 0.95)', 'important')
+        header.style.setProperty('color', 'white', 'important')
+        header.style.setProperty('backdrop-filter', 'blur(10px)', 'important')
+        ;(header.style as any).setProperty('-webkit-backdrop-filter', 'blur(10px)', 'important')
+        header.style.setProperty('border-bottom', '1px solid rgba(255, 255, 255, 0.1)', 'important')
+        header.style.position = 'sticky'
+        header.style.top = '0'
+        header.style.zIndex = '50'
+        header.style.width = '100%'
+        header.style.minHeight = '64px'
+        
+        // Add class for CSS targeting
+        header.classList.add('dark-header')
+      }
+    }
+
+    // Apply immediately
+    applyDarkHeaderStyles()
+    
+    // Apply again after a short delay to ensure it overrides any conflicting styles
+    setTimeout(applyDarkHeaderStyles, 100)
+    setTimeout(applyDarkHeaderStyles, 500)
+  }, [])
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header 
+      ref={headerRef}
+      className="dark-header sticky top-0 z-50 w-full backdrop-blur-md text-white"
+      style={{
+        backgroundColor: 'rgba(0, 0, 0, 0.95) !important',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        minHeight: '64px',
+        background: 'rgba(0, 0, 0, 0.95) !important'
+      }}
+    >
       <div className="container-responsive flex h-16 sm:h-20 md:h-24 lg:h-28 max-w-screen-xl items-center justify-between">
         {/* Logo */}
         <div className="flex items-center flex-shrink-0">
@@ -88,7 +130,7 @@ export function Navigation() {
               <NavigationMenuLink
                 href="#"
                 className={cn(
-                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md bg-background px-4 lg:px-6 py-2 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md px-4 lg:px-6 py-2 transition-colors text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-white/20 data-[state=open]:bg-white/20"
                 )}
               >
                 Home
@@ -96,7 +138,7 @@ export function Navigation() {
             </NavigationMenuItem>
             
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="nav-sleek h-10 lg:h-12 px-4 lg:px-6">
+              <NavigationMenuTrigger className="nav-sleek h-10 lg:h-12 px-4 lg:px-6 text-white hover:bg-white/10 data-[state=open]:bg-white/20">
                 Wellness Challenges
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -130,7 +172,7 @@ export function Navigation() {
               <NavigationMenuLink
                 href="#how-we-help"
                 className={cn(
-                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md bg-background px-4 lg:px-6 py-2 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md px-4 lg:px-6 py-2 transition-colors text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-white/20 data-[state=open]:bg-white/20"
                 )}
               >
                 How We Help
@@ -141,7 +183,7 @@ export function Navigation() {
               <NavigationMenuLink
                 href="#our-story"
                 className={cn(
-                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md bg-background px-4 lg:px-6 py-2 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md px-4 lg:px-6 py-2 transition-colors text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-white/20 data-[state=open]:bg-white/20"
                 )}
               >
                 Our Story
@@ -152,7 +194,7 @@ export function Navigation() {
               <NavigationMenuLink
                 href="#connect-with-us"
                 className={cn(
-                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md bg-background px-4 lg:px-6 py-2 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md px-4 lg:px-6 py-2 transition-colors text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-white/20 data-[state=open]:bg-white/20"
                 )}
               >
                 Connect With Us
@@ -168,7 +210,7 @@ export function Navigation() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="btn-mobile-friendly p-2"
+                className="btn-mobile-friendly p-2 text-white hover:bg-white/10"
                 aria-label="Open menu"
               >
                 <Menu className="h-6 w-6" />

@@ -77,14 +77,23 @@ export default function App() {
           }
           
           /* Ensure header works properly in Safari */
+          header,
           header.sticky,
           header[class*="sticky"] {
-            background: rgba(255, 255, 255, 0.98) !important;
+            background: rgba(0, 0, 0, 0.95) !important;
             backdrop-filter: blur(10px) !important;
             -webkit-backdrop-filter: blur(10px) !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+            width: 100% !important;
+            color: white !important;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            will-change: transform;
           }
           
           /* Force hardware acceleration for all positioned elements */
@@ -256,6 +265,17 @@ export default function App() {
           htmlElement.style.backfaceVisibility = 'hidden'
           htmlElement.style.webkitBackfaceVisibility = 'hidden'
         })
+
+        // Enhance header elements for Safari
+        const headerElements = document.querySelectorAll('header')
+        headerElements.forEach(header => {
+          const headerElement = header as HTMLElement
+          headerElement.style.transform = 'translate3d(0, 0, 0)'
+          headerElement.style.webkitTransform = 'translate3d(0, 0, 0)'
+          headerElement.style.backfaceVisibility = 'hidden'
+          headerElement.style.webkitBackfaceVisibility = 'hidden'
+          headerElement.style.willChange = 'transform'
+        })
       }
 
       // Apply fixes immediately and on DOM changes
@@ -263,6 +283,21 @@ export default function App() {
       setTimeout(applyJavaScriptFixes, 100)
       setTimeout(applyJavaScriptFixes, 500)
       setTimeout(applyJavaScriptFixes, 1000)
+      
+      // Apply Safari-specific header optimizations
+      const optimizeHeaders = () => {
+        const headers = document.querySelectorAll('header')
+        headers.forEach(header => {
+          const h = header as HTMLElement
+          h.style.transform = 'translateZ(0)'
+          h.style.webkitTransform = 'translateZ(0)'
+          h.style.backfaceVisibility = 'hidden'
+          h.style.webkitBackfaceVisibility = 'hidden'
+        })
+      }
+      
+      optimizeHeaders()
+      setTimeout(optimizeHeaders, 100)
 
       // Apply fixes when new content is loaded (for dynamic content)
       const observer = new MutationObserver(() => {
@@ -301,6 +336,28 @@ export default function App() {
       }
     }
   }, [])
+
+  // Apply header optimizations on page changes
+  useEffect(() => {
+    const optimizeHeaders = () => {
+      const headers = document.querySelectorAll('header')
+      headers.forEach(header => {
+        const h = header as HTMLElement
+        h.style.transform = 'translateZ(0)'
+        ;(h.style as any).webkitTransform = 'translateZ(0)'
+        h.style.backfaceVisibility = 'hidden'
+        ;(h.style as any).webkitBackfaceVisibility = 'hidden'
+      })
+    }
+
+    // Apply immediately and once more after a short delay
+    optimizeHeaders()
+    const timeout = setTimeout(optimizeHeaders, 100)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [currentPage])
 
   const renderPage = () => {
     switch (currentPage) {
