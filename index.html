@@ -65,31 +65,6 @@
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
       }
-      
-      /* CRITICAL: Immediate header styling to prevent white flash */
-      header,
-      nav,
-      .sticky,
-      [class*="Navigation"],
-      .force-dark-header,
-      .dark-header-forced,
-      .mobile-dark-header {
-        background: rgba(0, 0, 0, 0.95) !important;
-        background-color: rgba(0, 0, 0, 0.95) !important;
-        color: white !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 50 !important;
-        width: 100% !important;
-      }
-      
-      /* Remove any default margins that cause gaps */
-      .safe-area-top {
-        margin: 0 !important;
-        padding: 0 !important;
-      }
     </style>
   </head>
 

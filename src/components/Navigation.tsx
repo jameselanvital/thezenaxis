@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, Heart, Activity, Zap, Brain, Shield, Stethoscope, CircleDot, AlertCircle, Eye, Droplets, Baby, Menu } from "lucide-react" 
+import { ChevronDown, Heart, Activity, Zap, Brain, Shield, Stethoscope, CircleDot, AlertCircle, Eye, Droplets, Baby, Menu, X } from "lucide-react"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -68,126 +68,11 @@ const wellnessCategories = [
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
-  const headerRef = React.useRef<HTMLElement>(null)
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
 
-  // Force dark header styling aggressively with mobile-specific handling
-  React.useEffect(() => {
-    const forceDarkHeader = () => {
-      if (headerRef.current) {
-        const header = headerRef.current
-        
-        // Remove any conflicting classes first
-        header.classList.remove('bg-white', 'bg-white/95', 'bg-gray-50', 'bg-background')
-        
-        // Apply dark styles with maximum priority
-        header.style.setProperty('background', 'rgba(0, 0, 0, 0.95)', 'important')
-        header.style.setProperty('background-color', 'rgba(0, 0, 0, 0.95)', 'important')
-        header.style.setProperty('color', 'white', 'important')
-        header.style.setProperty('backdrop-filter', 'blur(10px)', 'important')
-        header.style.setProperty('-webkit-backdrop-filter', 'blur(10px)', 'important')
-        header.style.setProperty('border-bottom', '1px solid rgba(255, 255, 255, 0.1)', 'important')
-        
-        // Ensure no gaps by removing margins/padding and positioning correctly
-        header.style.setProperty('margin', '0', 'important')
-        header.style.setProperty('padding', '0', 'important')
-        header.style.setProperty('top', '0', 'important')
-        header.style.setProperty('position', 'sticky', 'important')
-        header.style.setProperty('width', '100%', 'important')
-        
-        // Mobile-specific styling
-        const isMobile = window.innerWidth <= 768
-        if (isMobile) {
-          header.style.setProperty('background-image', 'none', 'important')
-          header.style.setProperty('background-attachment', 'scroll', 'important')
-          // Force hardware acceleration on mobile
-          header.style.setProperty('transform', 'translateZ(0)', 'important')
-          header.style.setProperty('-webkit-transform', 'translateZ(0)', 'important')
-        }
-        
-        // Add the dark header class
-        header.classList.add('force-dark-header', 'mobile-dark-header')
-      }
-      
-      // Also apply to any other header elements globally
-      const allHeaders = document.querySelectorAll('header')
-      allHeaders.forEach(h => {
-        const headerEl = h as HTMLElement
-        headerEl.style.setProperty('background', 'rgba(0, 0, 0, 0.95)', 'important')
-        headerEl.style.setProperty('background-color', 'rgba(0, 0, 0, 0.95)', 'important')
-        headerEl.style.setProperty('color', 'white', 'important')
-        headerEl.style.setProperty('margin', '0', 'important')
-        headerEl.style.setProperty('padding', '0', 'important')
-        headerEl.style.setProperty('top', '0', 'important')
-        headerEl.classList.add('force-dark-header', 'mobile-dark-header')
-        
-        // Mobile-specific global styling
-        const isMobile = window.innerWidth <= 768
-        if (isMobile) {
-          headerEl.style.setProperty('background-image', 'none', 'important')
-          headerEl.style.setProperty('transform', 'translateZ(0)', 'important')
-        }
-      })
-      
-      // Remove margins from parent containers that might cause gaps
-      const safeAreaContainers = document.querySelectorAll('.safe-area-top, [class*="safe-area"]')
-      safeAreaContainers.forEach(container => {
-        const containerEl = container as HTMLElement
-        containerEl.style.setProperty('margin', '0', 'important')
-        containerEl.style.setProperty('padding', '0', 'important')
-        containerEl.style.setProperty('margin-top', '0', 'important')
-        containerEl.style.setProperty('padding-top', '0', 'important')
-      })
-    }
-
-    // Apply immediately and repeatedly with more frequent intervals for mobile
-    forceDarkHeader()
-    setTimeout(forceDarkHeader, 25)
-    setTimeout(forceDarkHeader, 75)
-    setTimeout(forceDarkHeader, 150)
-    setTimeout(forceDarkHeader, 300)
-    setTimeout(forceDarkHeader, 600)
-    setTimeout(forceDarkHeader, 1000)
-    
-    // Apply on resize to handle mobile orientation changes
-    const handleResize = () => {
-      setTimeout(forceDarkHeader, 100)
-    }
-    window.addEventListener('resize', handleResize)
-    
-    // Apply on touch events for mobile
-    const handleTouch = () => {
-      setTimeout(forceDarkHeader, 50)
-    }
-    document.addEventListener('touchstart', handleTouch, { passive: true })
-    
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      document.removeEventListener('touchstart', handleTouch)
-    }
-  }, [])
-
   return (
-    <header 
-      ref={headerRef}
-      className="force-dark-header dark-header-forced sticky top-0 z-50 w-full backdrop-blur-md border-b border-white/10 text-white"
-      style={{
-        background: 'rgba(0, 0, 0, 0.95)',
-        backgroundColor: 'rgba(0, 0, 0, 0.95)',
-        color: 'white',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        minHeight: '64px',
-        margin: '0',
-        padding: '0',
-        position: 'sticky',
-        top: '0',
-        width: '100%',
-        zIndex: '50'
-      }}
-    >
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container-responsive flex h-16 sm:h-20 md:h-24 lg:h-28 max-w-screen-xl items-center justify-between">
         {/* Logo */}
         <div className="flex items-center flex-shrink-0">
@@ -203,7 +88,7 @@ export function Navigation() {
               <NavigationMenuLink
                 href="#"
                 className={cn(
-                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md px-4 lg:px-6 py-2 transition-colors text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-white/20 data-[state=open]:bg-white/20"
+                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md bg-background px-4 lg:px-6 py-2 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
                 )}
               >
                 Home
@@ -211,7 +96,7 @@ export function Navigation() {
             </NavigationMenuItem>
             
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="nav-sleek h-10 lg:h-12 px-4 lg:px-6 text-white hover:bg-white/10 data-[state=open]:bg-white/20">
+              <NavigationMenuTrigger className="nav-sleek h-10 lg:h-12 px-4 lg:px-6">
                 Wellness Challenges
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -245,7 +130,7 @@ export function Navigation() {
               <NavigationMenuLink
                 href="#how-we-help"
                 className={cn(
-                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md px-4 lg:px-6 py-2 transition-colors text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-white/20 data-[state=open]:bg-white/20"
+                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md bg-background px-4 lg:px-6 py-2 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
                 )}
               >
                 How We Help
@@ -256,7 +141,7 @@ export function Navigation() {
               <NavigationMenuLink
                 href="#our-story"
                 className={cn(
-                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md px-4 lg:px-6 py-2 transition-colors text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-white/20 data-[state=open]:bg-white/20"
+                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md bg-background px-4 lg:px-6 py-2 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
                 )}
               >
                 Our Story
@@ -267,7 +152,7 @@ export function Navigation() {
               <NavigationMenuLink
                 href="#connect-with-us"
                 className={cn(
-                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md px-4 lg:px-6 py-2 transition-colors text-white hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-white/20 data-[state=open]:bg-white/20"
+                  "nav-sleek group inline-flex h-10 lg:h-12 w-max items-center justify-center rounded-md bg-background px-4 lg:px-6 py-2 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
                 )}
               >
                 Connect With Us
@@ -283,7 +168,7 @@ export function Navigation() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="btn-mobile-friendly p-2 text-white hover:bg-white/10"
+                className="btn-mobile-friendly p-2"
                 aria-label="Open menu"
               >
                 <Menu className="h-6 w-6" />
